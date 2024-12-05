@@ -1,0 +1,73 @@
+body{
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 100px;
+    background-color: grey;
+}
+
+.container{
+    background: fixed;
+    background-color: rgba(255, 254, 254, 0.474);
+    border-radius: 30px;
+    border: 2px solid black;
+    width: 400px;
+    height: 560px;
+}
+
+#myaw{
+    margin-left: 50px;
+    width: 290px;
+    height: 30px;
+    border-radius: 30px;
+}
+
+button {
+    width: 300px;
+    height: 40px;
+    margin-left: 50px;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+    transition: all ease-in 0.5s;
+}
+
+button:hover{
+    color: black;
+    background-color: white;
+}
+
+h2{
+    margin-top: 30px;
+    margin-left: 170px;
+}
+
+p{
+    margin-left: 50px;
+    font-weight: bold;
+    font-size: smaller;
+}
+
+input{
+    color: black;
+    transition: all 0.5s ease-in;
+}
+
+input:hover{
+    transform: scale(1.2);
+}
+
+a{
+    color: black;
+    text-decoration: none;
+    transition: all 0.5s ease-in;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
+#pshh{
+    margin-left: 110px;
+}
