@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Testimonials</title>
+    <style>
+     body {
+        font-family: Arial, sans-serif;
+        background-color: #390000;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 800px;
+        background: white;
+        padding: 20px;
+        margin: auto;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+    }
+
+    .testimonial-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #f4f6f9;
+        padding: 20px;
+        border-radius: 10px;
+        position: relative;
+    }
+
+    .testimonial-text {
+        flex: 1;
+        color: #0a4b9e;
+    }
+
+    .testimonial-text h2 {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .testimonial-carousel {
+        position: relative;
+        width: 40%;
+        overflow: hidden;
+        background: #0a4b9e;
+        border-radius: 5px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .carousel-inner {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+        width: 100%;
+    }
+
+    .testimonial-item {
+        min-width: 100%;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .stars {
+        color: gold;
+        font-size: 20px;
+        display: block;
+        margin-top: 5px;
+    }
+
+    .indicators {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .indicator {
+        width: 10px;
+        height: 10px;
+        margin: 0 5px;
+        border: 2px dashed #0a4b9e;
+        border-radius: 50%;
+        cursor: pointer;
+        background-color: transparent;
+    }
+
+    .indicator.active {
+        background-color: #0a4b9e;
+    }
+    </style>
+</head>
+<body>
+    <div class="testimonial-container">
+        <div class="testimonial-text">
+            <h2>"TESTIMONIAL"</h2>
+            <p>We value the voices of our patients. Your feedback helps us improve and continue providing quality healthcare. Here’s what some of our patients say about their experience at Holy Mother of Mercy Hospital. 💙</p>
+        </div>
+        <div class="testimonial-carousel">
+            <div class="carousel-inner" id="testimonial-slider"></div>
+        </div>
+    </div>
+    <div class="indicators" id="indicators"></div>
+
+    <script>
+let testimonials = [];
+let currentIndex = 0;
+
+async function fetchTestimonials() {
+    const response = await fetch("get_testimonials.php");
+    testimonials = await response.json();
+    initializeSlides();
+}
+
+function getStarRating(rating) {
+    let stars = "";
+    for (let i = 1; i <= 5; i++) {
+        stars += i <= rating ? "★" : "☆";
+    }
+    return `<span class="stars">${stars}</span>`;
+}
+
+function initializeSlides() {
+    const slider = document.getElementById("testimonial-slider");
+    const indicatorsContainer = document.getElementById("indicators");
+
+    slider.innerHTML = "";
+    indicatorsContainer.innerHTML = "";
+
+    testimonials.forEach((testimonial, index) => {
+        const slide = document.createElement("div");
+        slide.classList.add("testimonial-item");
+        slide.innerHTML = `
+            <p class="feedback">"${testimonial.feedback}"</p>
+            <p class="stars">${getStarRating(testimonial.rating)}</p>
+            <p class="name">- ${testimonial.name}</p>
+        `;
+        slider.appendChild(slide);
+
+        // Create indicator
+        const indicator = document.createElement("span");
+        indicator.classList.add("indicator");
+        if (index === 0) indicator.classList.add("active");
+        indicator.addEventListener("click", () => {
+            currentIndex = index;
+            updateSlide();
+        });
+        indicatorsContainer.appendChild(indicator);
+    });
+
+    updateSlide();
+}
+
+function updateSlide() {
+    const slider = document.getElementById("testimonial-slider");
+    slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+    const indicators = document.querySelectorAll(".indicator");
+    indicators.forEach((indicator, index) => {
+        indicator.classList.toggle("active", index === currentIndex);
+    });
+}
+
+function changeSlide(direction) {
+    currentIndex += direction;
+    if (currentIndex >= testimonials.length) currentIndex = 0;
+    if (currentIndex < 0) currentIndex = testimonials.length - 1;
+    updateSlide();
+}
+
+// Auto-slide every 5 seconds
+setInterval(() => changeSlide(1), 5000);
+
+document.addEventListener("DOMContentLoaded", fetchTestimonials);
+    </script>
+</body>
+</html>

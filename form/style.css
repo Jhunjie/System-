@@ -1,0 +1,106 @@
+body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
+        .container { max-width: 800px; background: rgb(139, 0, 0); padding: 20px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); display: flex; align-items: center; }
+        .testimonial-section { flex: 1; }
+        .carousel { flex: 1; overflow: hidden; position: relative; width: 300px; height: 200px; }
+        .carousel-inner { display: flex; transition: transform 0.5s ease-in-out; }
+        .testimonial { min-width: 100%; padding: 15px; box-sizing: border-box; text-align: center; }
+        
+.testimonial-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #007d57;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.testimonial-text {
+  flex: 1;
+  color: #0a4b9e;
+  font-family: Arial, sans-serif;
+}
+
+.testimonial-text h2 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.testimonial-text p {
+  font-size: 16px;
+}
+
+.testimonial-box {
+  background: #0a4b9e;
+  color: white;
+  border-radius: 5px;
+  max-width: 300px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.testimonial-box .feedback {
+  font-style: italic;
+  font-size: 18px;
+}
+
+.testimonial-box .name {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.testimonial-carousel {
+  position: relative;
+  width: 320px;
+  overflow: hidden;
+  background: #0a4b9e;
+  border-radius: 5px;
+  color: white;
+}
+
+.carousel-inner {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+}
+
+.testimonial-item {
+  min-width: 100%;
+  text-align: center;
+  padding: 20px;
+}
+
+.testimonial-item .feedback {
+  font-style: italic;
+  font-size: 18px;
+}
+
+.testimonial-item .name {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* Navigation Buttons */
+.prev, .next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 18px;
+  color: #0a4b9e;
+  border-radius: 50%;
+}
+
+.prev { left: -40px; }
+.next { right: -40px; }
+
+.stars {
+  color: gold;
+  font-size: 20px;
+  display: block;
+  margin-top: 5px;
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Satisfaction Survey</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
+        .container { max-width: 600px; background: white; padding: 20px; margin: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .form-section { display: none; }
+        .form-section.active { display: block; }
+        label { display: block; margin-top: 10px; font-weight: bold; }
+        .rating { display: flex; gap: 10px; margin-bottom: 10px; }
+        .stars { display: flex; gap: 5px; cursor: pointer; }
+        .stars span { font-size: 25px; color: #ccc; }
+        .stars span.active { color: gold; }
+        textarea, select, input { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
+        .btn-container { display: flex; justify-content: space-between; margin-top: 15px; }
+        button { background: #007BFF; color: white; border: none; padding: 10px; cursor: pointer; border-radius: 4px; }
+        button:hover { background: #0056b3; }
+    </style>
+    <script>
+        let currentSection = 0;
+        function showSection(index) {
+            let sections = document.querySelectorAll(".form-section");
+            sections.forEach((section, i) => {
+                section.classList.toggle("active", i === index);
+            });
+            document.getElementById("prevBtn").style.display = index === 0 ? "none" : "inline-block";
+            document.getElementById("nextBtn").style.display = index === sections.length - 1 ? "none" : "inline-block";
+            document.getElementById("submitBtn").style.display = index === sections.length - 1 ? "inline-block" : "none";
+        }
+        function nextSection() {
+            currentSection++;
+            showSection(currentSection);
+        }
+        function prevSection() {
+            currentSection--;
+            showSection(currentSection);
+        }
+        function validateForm() {
+            return true;
+        }
+        function setRating(stars, rating) {
+            let spans = document.querySelectorAll(".stars span");
+            spans.forEach((span, index) => {
+                span.classList.toggle("active", index < rating);
+            });
+            document.getElementById("starRating").value = rating;
+        }
+        window.onload = function() { showSection(currentSection); };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Patient Satisfaction Survey</h2>
+        <form name="surveyForm" action="submit.php" method="POST">
+            <div class="form-section active">
+                <label>Name: <input type="text" name="name" required></label>
+                <label>Age: <input type="number" name="age" required></label>
+            </div>
+            <div class="form-section">
+                <label>Area of Service:</label>
+                <select name="service">
+                    <option>Radiology</option>
+                    <option>MIS</option>
+                    <option>Philhealth</option>
+                    <option>Pharmacy</option>
+                    <option>Laboratory</option>
+                    <option>Billing</option>
+                </select>
+            </div>
+            <div class="form-section">
+                <label>Ease of getting care:</label>
+                <div class="rating">
+                    <label><input type="radio" name="care" value="4"> Excellent</label>
+                    <label><input type="radio" name="care" value="3"> Satisfactory</label>
+                    <label><input type="radio" name="care" value="2"> Needs Improvement</label>
+                    <label><input type="radio" name="care" value="1"> No Opinion</label>
+                </div>
+            </div>
+            <div class="form-section">
+                <label>Waiting time spent in waiting area:</label>
+                <div class="rating">
+                    <label><input type="radio" name="waiting_time" value="4"> Excellent</label>
+                    <label><input type="radio" name="waiting_time" value="3"> Satisfactory</label>
+                    <label><input type="radio" name="waiting_time" value="2"> Needs Improvement</label>
+                    <label><input type="radio" name="waiting_time" value="1"> No Opinion</label>
+                </div>
+            </div>
+            <div class="form-section">
+                <label>Overall Satisfaction (Star Rating):</label>
+                <div class="stars" onclick="setRating(this, event.target.dataset.value)">
+                    <span data-value="1">★</span>
+                    <span data-value="2">★</span>
+                    <span data-value="3">★</span>
+                    <span data-value="4">★</span>
+                    <span data-value="5">★</span>
+                </div>
+                <input type="hidden" id="starRating" name="star_rating" value="0">
+            </div>
+            <div class="form-section">
+                <label>Additional Feedback:</label>
+                <textarea name="feedback"></textarea>
+            </div>
+            <div class="btn-container">
+                <button type="button" id="prevBtn" onclick="prevSection()">Previous</button>
+                <button type="button" id="nextBtn" onclick="nextSection()">Next</button>
+                <button type="submit" id="submitBtn" style="display: none;">Submit</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
