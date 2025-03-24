@@ -1,53 +1,96 @@
-<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "slcdb";
-
-$conn = new mysqli($servername, $username, $password, $database);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-$sql = "SELECT name, feedback, star_rating, created_at FROM testimonials ORDER BY created_at DESC";
-$result = $conn->query($sql);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testimonials</title>
+    <title>Survey Form</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
-        .testimonial-container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .testimonial { margin-bottom: 20px; padding: 10px; border-bottom: 1px solid #ddd; }
-        .stars { color: gold; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .stars span {
+            cursor: pointer;
+            font-size: 24px;
+        }
+        .btn-container {
+            margin-top: 15px;
+        }
     </style>
+    <script>
+        function setRating(el, value) {
+            document.getElementById("starRating").value = value;
+            let stars = el.querySelectorAll("span");
+            stars.forEach(star => {
+                star.style.color = star.dataset.value <= value ? "gold" : "gray";
+            });
+        }
+        function prevSection() {
+            // Logic for previous section
+        }
+        function nextSection() {
+            // Logic for next section
+        }
+    </script>
 </head>
 <body>
-    <div class="testimonial-container">
-        <h2>Patient Testimonials</h2>
-        <?php if ($result->num_rows > 0): ?>
-            <?php while ($row = $result->fetch_assoc()): ?>
-                <div class="testimonial">
-                    <strong><?= htmlspecialchars($row["name"]) ?></strong> (<?= date("F j, Y", strtotime($row["created_at"])) ?>)
-                    <div class="stars">
-                        <?php for ($i = 0; $i < $row["star_rating"]; $i++): ?>
-                            ★
-                        <?php endfor; ?>
-                    </div>
-                    <p><?= nl2br(htmlspecialchars($row["feedback"])) ?></p>
-                </div>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <p>No testimonials yet.</p>
-        <?php endif; ?>
+
+    <div class="form-container">
+        <h2>Survey Form</h2>
+
+        <fieldset>
+            <legend><b>Legend:</b> 1 - Waiting Time, 2 - Overall Satisfaction, 3 - Feedback</legend>
+
+            <table>
+                <tr>
+                    <th>#</th>
+                    <th>Question</th>
+                    <th>Response</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Waiting time spent in waiting area:</td>
+                    <td>
+                        <label><input type="radio" name="waiting_time" value="4"> Excellent</label>
+                        <label><input type="radio" name="waiting_time" value="3"> Satisfactory</label>
+                        <label><input type="radio" name="waiting_time" value="2"> Needs Improvement</label>
+                        <label><input type="radio" name="waiting_time" value="1"> No Opinion</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Overall Satisfaction (Star Rating):</td>
+                    <td>
+                        <div class="stars" onclick="setRating(this, event.target.dataset.value)">
+                            <span data-value="1">★</span>
+                            <span data-value="2">★</span>
+                            <span data-value="3">★</span>
+                            <span data-value="4">★</span>
+                            <span data-value="5">★</span>
+                        </div>
+                        <input type="hidden" id="starRating" name="star_rating" value="0">
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Additional Feedback:</td>
+                    <td><textarea name="feedback"></textarea></td>
+                </tr>
+            </table>
+
+            <div class="btn-container">
+                <button type="button" id="prevBtn" onclick="prevSection()">Previous</button>
+                <button type="button" id="nextBtn" onclick="nextSection()">Next</button>
+                <button type="submit" id="submitBtn" style="display: none;">Submit</button>
+            </div>
+        </fieldset>
+
     </div>
+
 </body>
 </html>
-
-<?php
-$conn->close();
-?>
